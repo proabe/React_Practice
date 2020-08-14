@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import "./App.css";
 import UserInput from "./User/UserInput";
 import UserOutput from "./User/UserOutput";
+import ValidationComponent from "./Validation/ValidationComponent";
+import CharComponent from './Char/CharComponent';
 
 class App extends Component {
   state = {
@@ -10,7 +12,38 @@ class App extends Component {
       { username: "Abhinav" },
       { username: "Anuj" },
     ],
+    textLength: 0,
+    textCon: ""
   };
+
+  changeLengthTextHandler = (event) => {
+    const len = event.target.value.length;
+    const currState = {
+      ...this.state.Users,
+      textLength: len,
+      textCon: event.target.value
+    }
+    this.setState(currState);
+  }
+
+  changeTextHandler = (event, index) => {
+
+    const previousState = {...this.state};
+
+    const previousText = previousState.textCon;
+    
+    let newText = previousText.split("");
+    newText.splice(index,1);
+    newText = newText.join("");
+
+    const currState = {
+      ...this.state.Users,
+      textLength: this.state.textLength - 1,
+      textCon: newText
+    }
+
+    this.setState(currState);
+  }
 
   changeNameHandler = (event) => {
     this.setState({
@@ -22,11 +55,28 @@ class App extends Component {
     });
   };
 
-  render() {
 
+
+  render() {
     return (
       <div className="App">
         <h1>React App</h1>
+        <input type="text" onChange={this.changeLengthTextHandler} value={this.state.textCon}/>
+        <p>{this.state.textLength}</p>
+        <ValidationComponent 
+          textLength={this.state.textLength}
+        />
+        <div>
+          {this.state.textCon.split("").map((text, index) => {
+            return (
+              <CharComponent 
+                text={text}
+                key={index}
+                index={index}
+                click={this.changeTextHandler}
+            />);
+          })}
+        </div>
         <UserInput 
           change={this.changeNameHandler} 
           username={this.state.Users[2].username} 
