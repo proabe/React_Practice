@@ -24,29 +24,22 @@ class App extends Component {
 
   render() {
 
-    const style = {
-      backgroundColor: '#80DEEA',
-      width: '40%',
-      margin: '7px auto',
-      boxShadow: '0px 0px 2px #acacac',
-      padding: '8px'
-    }
-
     return (
       <div className="App">
         <h1>React App</h1>
         <UserInput 
           change={this.changeNameHandler} 
-          username={this.state.Users[2].username} />
+          username={this.state.Users[2].username} 
+        />
         <UserOutput 
           username={this.state.Users[0].username} 
-          style={style} />
+        />
         <UserOutput 
           username={this.state.Users[1].username} 
-          style={style} />
+        />
         <UserOutput 
           username={this.state.Users[2].username} 
-          style={style} />
+        />
       </div>
     );
   }
