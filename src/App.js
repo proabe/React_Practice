@@ -1,70 +1,45 @@
 import React, { Component } from "react";
 import "./App.css";
-import UserInput from "./User/UserInput";
-import UserOutput from "./User/UserOutput";
 import ValidationComponent from "./Validation/ValidationComponent";
 import CharComponent from './Char/CharComponent';
 
 class App extends Component {
   state = {
-    Users: [
-      { username: "Abhishek" },
-      { username: "Abhinav" },
-      { username: "Anuj" },
-    ],
-    textLength: 0,
     textCon: ""
   };
 
   changeLengthTextHandler = (event) => {
-    const len = event.target.value.length;
     const currState = {
-      ...this.state.Users,
-      textLength: len,
       textCon: event.target.value
     }
     this.setState(currState);
   }
 
-  changeTextHandler = (event, index) => {
-
+  deleteCharacterHandler = (index) => {
     const previousState = {...this.state};
 
     const previousText = previousState.textCon;
     
     let newText = previousText.split("");
+    console.log(newText);
     newText.splice(index,1);
     newText = newText.join("");
 
     const currState = {
-      ...this.state.Users,
-      textLength: this.state.textLength - 1,
       textCon: newText
     }
 
     this.setState(currState);
   }
 
-  changeNameHandler = (event) => {
-    this.setState({
-      Users: [
-        { username: "Panda" },
-        { username: "Seth" },
-        { username: event.target.value },
-      ],
-    });
-  };
-
-
-
   render() {
     return (
       <div className="App">
         <h1>React App</h1>
         <input type="text" onChange={this.changeLengthTextHandler} value={this.state.textCon}/>
-        <p>{this.state.textLength}</p>
+        <p>{this.state.textCon.length}</p>
         <ValidationComponent 
-          textLength={this.state.textLength}
+          textLength={this.state.textCon.length}
         />
         <div>
           {this.state.textCon.split("").map((text, index) => {
@@ -72,24 +47,10 @@ class App extends Component {
               <CharComponent 
                 text={text}
                 key={index}
-                index={index}
-                click={this.changeTextHandler}
+                click={() => this.deleteCharacterHandler(index)}
             />);
           })}
         </div>
-        <UserInput 
-          change={this.changeNameHandler} 
-          username={this.state.Users[2].username} 
-        />
-        <UserOutput 
-          username={this.state.Users[0].username} 
-        />
-        <UserOutput 
-          username={this.state.Users[1].username} 
-        />
-        <UserOutput 
-          username={this.state.Users[2].username} 
-        />
       </div>
     );
   }
